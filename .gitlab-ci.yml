@@ -15,10 +15,8 @@ test:
   stage: test
   script:
     - gitbook build . public # build to public path
-  only:
-    - branches # this job will affect every branch except 'master'
-  except:
-    - master
+  rules:
+    - if: $CI_COMMIT_REF_NAME != $CI_DEFAULT_BRANCH
     
 # the 'pages' job will deploy and build your site to the 'public' path
 pages:
@@ -29,5 +27,5 @@ pages:
     paths:
       - public
     expire_in: 1 week
-  only:
-    - master # this job will affect only the 'master' branch
+  rules:
+    - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH
